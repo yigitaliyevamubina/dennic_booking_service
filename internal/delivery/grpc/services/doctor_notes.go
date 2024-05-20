@@ -6,6 +6,7 @@ import (
 	"booking_service/internal/pkg/otlp"
 	"booking_service/internal/usecase"
 	"context"
+
 	"go.opentelemetry.io/otel/attribute"
 	"go.uber.org/zap"
 )
@@ -16,12 +17,8 @@ const (
 )
 
 type BookingDoctorNotes struct {
-	logger                          *zap.Logger
-	bookedAppointmentUseCase        usecase.BookedAppointments
-	bookedPatientUseCase            usecase.Patient
-	bookedDoctorNotesUseCase        usecase.DoctorNotes
-	bookedArchiveUseCase            usecase.Archive
-	bookedDoctorAvailabilityUseCase usecase.DoctorAvailability
+	logger                   *zap.Logger
+	bookedDoctorNotesUseCase usecase.DoctorNotes
 }
 
 func BookingDoctorNotesNewRPC(
