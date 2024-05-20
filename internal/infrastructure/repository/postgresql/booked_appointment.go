@@ -307,13 +307,14 @@ func (r *BookingAppointment) GetFilteredAppointments(
 	}
 
 	if req.Field != "" && req.Value != "" {
-		toSql = toSql.Where(r.db.Sq.ILike(req.Field, req.Value+"%"))
-		countBuilder = countBuilder.Where(r.db.Sq.ILike(req.Field, req.Value+"%"))
+		toSql = toSql.Where(r.db.Sq.Equal(req.Field, req.Value))
+		countBuilder = countBuilder.Where(r.db.Sq.Equal(req.Field, req.Value))
 	}
 
 	if req.Status != "" {
-		toSql = toSql.Where(r.db.Sq.Equal("status", req.Value))
-		countBuilder = countBuilder.Where(r.db.Sq.Equal("status", req.Value))
+		toSql = toSql.Where(r.db.Sq.Equal("status", req.Status))
+		countBuilder = countBuilder.Where(r.db.Sq.Equal("status", req.Status))
+
 	}
 
 	if req.OrderBy != "" {
@@ -329,12 +330,13 @@ func (r *BookingAppointment) GetFilteredAppointments(
 		return nil, err
 	}
 
-	queryCount, _, err := countBuilder.ToSql()
+	queryCount, argss, err := countBuilder.ToSql()
 	if err != nil {
 		return nil, err
 	}
 
-	err = r.db.QueryRow(ctx, queryCount).Scan(&count)
+	err = r.db.QueryRow(ctx, queryCount, argss...).Scan(&count)
+
 	if err != nil {
 		return nil, err
 	}

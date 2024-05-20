@@ -5,8 +5,6 @@ COPY . /app
 
 WORKDIR /app
 
-RUN go mod tidy && go mod vendor
-
 RUN go build -o main cmd/app/main.go
 
 FROM alpine:3.18
